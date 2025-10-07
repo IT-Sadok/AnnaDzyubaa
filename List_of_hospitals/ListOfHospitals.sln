@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36121.58 d17.14
+VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List_of_hospitals", "List_of_hospitals\List_of_hospitals.csproj", "{19BD5157-5BE6-4397-B08F-53993D28EBEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hospitals", "Hospitals\Hospitals.csproj", "{19BD5157-5BE6-4397-B08F-53993D28EBEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
