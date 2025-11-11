@@ -1,0 +1,10 @@
+﻿using Hospitals.Models;
+
+public class Host
+{
+    public string? Name { get; set; }
+
+    public int? PhoneNumber { get; set; }
+
+    public List<Doctor> doctorsAppointment = new List<Doctor>();
+}

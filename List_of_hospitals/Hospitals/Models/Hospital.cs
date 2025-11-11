@@ -1,4 +1,4 @@
-﻿namespace Hospitals
+﻿namespace Hospitals.Models
 {
     public class Hospital
     {
