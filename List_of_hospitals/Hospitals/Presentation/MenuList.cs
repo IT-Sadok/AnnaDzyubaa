@@ -1,8 +1,6 @@
-﻿public partial class Menu
+﻿public enum MenuList
 {
-    public enum MenuList
-    {
-        PacientRegistration = 1,
+        PatientRegistration = 1,
         ShowPacientAccountInfo,
         ShowHospitalsList,
         ShowDoctorsList,
@@ -10,6 +8,4 @@
         ShowDoctorsAppointment,
         CancelDoctorsAppointment,
         Exit,
-    }
 }
-
