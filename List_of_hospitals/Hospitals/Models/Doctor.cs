@@ -1,6 +1,4 @@
-﻿using Hospitals;
-
-namespace Hospitals.Models
+﻿namespace Hospitals.Models
 {
     public class Doctor
     {

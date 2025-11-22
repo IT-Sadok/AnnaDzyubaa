@@ -1,8 +1,6 @@
 ﻿using Hospitals.DateBases;
 using Hospitals.Models;
 
-//Repository(Сховище)
-//Цей клас відповідає тільки за зберігання даних (CRUD).
 public class DoctorRepository : IDoctorRepository
 {
     private readonly List<Doctor> _doctors = new List<Doctor>

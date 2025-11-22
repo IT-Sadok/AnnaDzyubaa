@@ -3,28 +3,20 @@ using Hospitals.GeneratorId;
 using Hospitals.Logging;
 using Hospitals.Models;
 using Hospitals.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hospitals.Services
 {
-    public class HostService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository, IHostRepository hostRepository, ILogger logger, IGeneratorId generatorId) : IHostService
+    public class PatientService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository, IPatientRepository hostRepository, ILogger logger, IGeneratorId generatorId) : IPatientService
     {
         private readonly IDoctorRepository _doctorRepository = doctorRepository;
         private readonly IHospitalRepository _hospitalRepository = hospitalRepository;
-        private readonly IHostRepository _hostRepository = hostRepository;
+        private readonly IPatientRepository _hostRepository = hostRepository;
         private readonly ILogger _logger = logger;
         private readonly IGeneratorId _generatorId = generatorId;
 
         private string? _hostName;
         private int _phoneNumber;
-        private const int countOfNumber = 9;
+        private const int CountOfNumber = 9;
 
 
 
@@ -44,7 +36,7 @@ namespace Hospitals.Services
         {
             var count = phoneNumber?.Length;
 
-            if (Int32.TryParse(phoneNumber, out int number) && count == countOfNumber)
+            if (Int32.TryParse(phoneNumber, out int number) && count == CountOfNumber)
             {
                 if (number != 0)
                 {
@@ -59,18 +51,18 @@ namespace Hospitals.Services
 
         public void AddNewPatient()
         {
-            var host = new Host
+            var host = new Patient
             {
                 Id = _generatorId.GenerateId(),
                 Name = _hostName,
                 PhoneNumber = _phoneNumber
             };
 
-            _hostRepository.AddHost(host);
+            _hostRepository.AddPatient(host);
             _logger.LogInfo($"Patient account has created successfully. Your ID: {_generatorId.Id}");
         }
 
-        public Host? SearchPatientById(string? id)
+        public Patient? SearchPatientById(string? id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -80,7 +72,7 @@ namespace Hospitals.Services
 
             if (Int32.TryParse(id, out int number))
             {
-                Host? host = _hostRepository.ShowHostInfo().FirstOrDefault(h => h.Id == number);
+                Patient? host = _hostRepository.ShowPatientInfo().FirstOrDefault(h => h.Id == number);
                 if (host != null)
                 {
                     return host;
@@ -98,7 +90,7 @@ namespace Hospitals.Services
             }
         }
 
-        public bool CancelDoctorsAppointment(string? console, Host patientAccount)
+        public bool CancelDoctorsAppointment(string? console, Patient patientAccount)
         {
             if (string.IsNullOrWhiteSpace(console))
             {
@@ -151,13 +143,13 @@ namespace Hospitals.Services
             return doctor;
         }
 
-        public void ProcessMakingAppointmentWithDoctor(Doctor doctor, Host patientAccount)
+        public void ProcessMakingAppointmentWithDoctor(Doctor doctor, Patient patientAccount)
         {
             _hostRepository.AddAppointment(doctor, patientAccount);
             _logger.LogInfo($"You have an appointment with the doctor {doctor.FullName}");
         }
 
-        public IEnumerable<Doctor>? ShowDoctorsAppointment(Host patientAccount)
+        public IEnumerable<Doctor>? ShowDoctorsAppointment(Patient patientAccount)
         {
             if (patientAccount.doctorsAppointment.Count == 0)
             {
@@ -193,6 +185,12 @@ namespace Hospitals.Services
             }
 
             return doctors;
+        }
+
+        public void UpdatePatientPhoneNumber(Patient patientAccount, string? newPhoneNumber)
+        {
+            patientAccount.PhoneNumber = _phoneNumber;
+            _logger.LogInfo("Your phone number has been successfully changed");
         }
 
         public IEnumerable<Hospital> ShowHospitalsList() => _hospitalRepository.ShowHospitalsList();

@@ -1,8 +1,6 @@
 ﻿using Hospitals.Models;
 using Hospitals.Repositories;
 
-//Repository(Сховище)
-//Цей клас відповідає тільки за зберігання даних (CRUD).
 public class HospitalRepository : IHospitalRepository
 {
     private readonly List<Hospital> _hospitals = new List<Hospital>()

@@ -1,20 +1,14 @@
-﻿using Hospitals;
-using Hospitals.DateBases;
-using Hospitals.Models;
+﻿using Hospitals.Models;
 using Hospitals.Services;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Numerics;
-using System.Xml.Linq;
 
 public class Menu
 {
-    private int _UserChoiceNumber;
-    private IHostService _hostService;
+    private int _userChoiceNumber;
+    private IPatientService _patientService;
 
-    public Menu(IHostService hostService)
+    public Menu(IPatientService patientService)
     {
-        _hostService = hostService;
+        _patientService = patientService;
     }
 
     public void PatientRegistration()
@@ -28,7 +22,7 @@ public class Menu
 
             string? name = Console.ReadLine();
 
-            var validation = _hostService.NameValidation(name);
+            var validation = _patientService.NameValidation(name);
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue ...");
@@ -48,7 +42,7 @@ public class Menu
 
             var phoneNumber = Console.ReadLine();
 
-            bool validation = _hostService.PhoneNumberValidation(phoneNumber);
+            bool validation = _patientService.PhoneNumberValidation(phoneNumber);
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue ...");
@@ -60,16 +54,16 @@ public class Menu
             }
         }
 
-        _hostService.AddNewPatient();
+        _patientService.AddNewPatient();
 
         Console.WriteLine();
         Console.WriteLine("Press any key to continue ...");
         Console.ReadKey();
     }
 
-    public Host ShowPacientAccountInfo()
+    public Patient ShowPacientAccountInfo()
     {
-        Host? hostInfo;
+        Patient? patientInfo;
 
         while (true)
         {
@@ -78,13 +72,13 @@ public class Menu
             Console.WriteLine();
 
             var console = Console.ReadLine();
-            hostInfo = _hostService.SearchPatientById(console);
+            patientInfo = _patientService.SearchPatientById(console);
 
             Console.WriteLine();
             Console.WriteLine("Press any key to continue ...");
             Console.ReadKey();
 
-            if (hostInfo != null)
+            if (patientInfo != null)
             {
                 break;
             }
@@ -93,12 +87,12 @@ public class Menu
         Console.WriteLine();
         Console.WriteLine($"Personal information");
         Console.WriteLine();
-        Console.WriteLine($"ID: {hostInfo.Id} \nName: {hostInfo.Name} \nPhone number: +380{hostInfo.PhoneNumber}");
+        Console.WriteLine($"ID: {patientInfo.Id} \nName: {patientInfo.Name} \nPhone number: +380{patientInfo.PhoneNumber}");
         Console.WriteLine();
         Console.WriteLine("Press any key to continue ...");
         Console.ReadKey();
 
-        return hostInfo;
+        return patientInfo;
     }
 
     public void ShowHospitalsList()
@@ -107,7 +101,7 @@ public class Menu
         Console.WriteLine("List of hospitals:");
         Console.WriteLine();
 
-        foreach (var hospital in _hostService.ShowHospitalsList())
+        foreach (var hospital in _patientService.ShowHospitalsList())
         {
             Console.WriteLine($"ID: {hospital.Id} | Name: {hospital.Name}");
         }
@@ -131,7 +125,7 @@ public class Menu
             Console.WriteLine("Type hospital ID");
             Console.WriteLine();
             var console = Console.ReadLine();
-            doctors = _hostService.ShowDoctorsList(console);
+            doctors = _patientService.ShowDoctorsList(console);
 
             if (doctors != null)
             {
@@ -176,7 +170,7 @@ public class Menu
             Console.WriteLine();
 
             var console = Console.ReadLine();
-            doctor = _hostService.SearchSpecificDoctor(console);
+            doctor = _patientService.SearchSpecificDoctor(console);
             
             if (doctor != null)
             {
@@ -196,7 +190,7 @@ public class Menu
 
             if (console == ConsoleKey.Enter)
             {
-                _hostService.ProcessMakingAppointmentWithDoctor(doctor, patientAccount);
+                _patientService.ProcessMakingAppointmentWithDoctor(doctor, patientAccount);
                 break;
             }
             else if (console == ConsoleKey.Escape)
@@ -222,12 +216,12 @@ public class Menu
         Console.ReadKey();
     }
 
-    public Host ShowDoctorsAppointment()
+    public Patient ShowDoctorsAppointment()
     {
         Console.Clear();
 
         var patientAccount = ShowPacientAccountInfo();
-        var appointments = _hostService.ShowDoctorsAppointment(patientAccount);
+        var appointments = _patientService.ShowDoctorsAppointment(patientAccount);
 
         if (appointments != null)
         {
@@ -252,7 +246,7 @@ public class Menu
         Console.Clear();
 
         var patientAccount = ShowPacientAccountInfo();
-        var appointments = _hostService.ShowDoctorsAppointment(patientAccount);
+        var appointments = _patientService.ShowDoctorsAppointment(patientAccount);
 
         if (appointments != null)
         {
@@ -279,7 +273,7 @@ public class Menu
 
                 if (!canceling)
                 {
-                    canceling = _hostService.CancelDoctorsAppointment(console, patientAccount);
+                    canceling = _patientService.CancelDoctorsAppointment(console, patientAccount);
 
                     if (canceling)
                     {
@@ -289,7 +283,57 @@ public class Menu
             }
         }
 
-        
+        Console.WriteLine();
+        Console.WriteLine("Press any key to continue ...");
+        Console.ReadKey();
+    }
+
+    public void ChangePatientPhoneNumber()
+    {
+        Console.Clear();
+        var patientAccount = ShowPacientAccountInfo();
+
+        while (true)
+        {
+            string? newPhoneNumber;
+
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please, enter your new phone number");
+                Console.WriteLine();
+
+                newPhoneNumber = Console.ReadLine();
+
+                if (_patientService.PhoneNumberValidation(newPhoneNumber))
+                {
+                    break;
+                }
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine("Press <Enter> to confirm the new phone number, or <Escape> to cancel the changes");
+
+            var consoleKey = Console.ReadKey().Key;
+
+            if (consoleKey == ConsoleKey.Enter)
+            {
+                _patientService.UpdatePatientPhoneNumber(patientAccount, newPhoneNumber);
+                break;
+            }
+            else if (consoleKey == ConsoleKey.Escape)
+            {
+                break;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nYou can press only <Enter> or <Escape>");
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+        }
+
         Console.WriteLine();
         Console.WriteLine("Press any key to continue ...");
         Console.ReadKey();
@@ -317,7 +361,7 @@ public class Menu
         while (true)
         {
             Console.WriteLine();
-            var console = int.TryParse(Console.ReadLine(), out _UserChoiceNumber);
+            var console = int.TryParse(Console.ReadLine(), out _userChoiceNumber);
             var menuArray = Enum.GetNames(typeof(MenuList));
 
             Console.WriteLine();
@@ -328,7 +372,7 @@ public class Menu
                 Console.WriteLine("Please, type only one number");
                 Console.ResetColor();
             }
-            else if (_UserChoiceNumber < 1 || _UserChoiceNumber > menuArray.Length)
+            else if (_userChoiceNumber < 1 || _userChoiceNumber > menuArray.Length)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"You can choose a number only from 1 to {menuArray.Length}");
@@ -345,7 +389,7 @@ public class Menu
 
     public void ChooseAction()
     {
-        switch ((MenuList)_UserChoiceNumber)
+        switch ((MenuList)_userChoiceNumber)
         {
             case MenuList.PatientRegistration:
                 PatientRegistration();
@@ -367,6 +411,9 @@ public class Menu
                 break;
             case MenuList.CancelDoctorsAppointment:
                 CancelDoctorsAppointment();
+                break;
+            case MenuList.ChangePatientPhoneNumber:
+                ChangePatientPhoneNumber();
                 break;
             case MenuList.Exit:
                 Environment.Exit(0);

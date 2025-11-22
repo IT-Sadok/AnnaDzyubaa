@@ -7,5 +7,6 @@
         ProcessMakingAppointmentWithDoctor,
         ShowDoctorsAppointment,
         CancelDoctorsAppointment,
+        ChangePatientPhoneNumber,
         Exit,
 }

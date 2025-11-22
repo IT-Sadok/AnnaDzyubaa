@@ -1,6 +1,6 @@
 ﻿using Hospitals.Models;
 
-public class Host
+public class Patient
 {
     public int Id { get; set; }
     public string? Name { get; set; }
