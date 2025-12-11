@@ -2,7 +2,7 @@
 {
     public interface IGeneratorId
     {
-        public int Id { get; set; }
-        public int GenerateId();
+        public int PatientId { get; set; }
+        public int GeneratePatientId();
     }
 }

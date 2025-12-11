@@ -11,11 +11,5 @@ namespace Hospitals.Repositories
         }
 
         public IEnumerable<Patient> ShowPatientInfo() => _patients;
-
-        public void AddAppointment(Doctor doctor, Patient patientAccount)
-        {
-            var account = _patients.SingleOrDefault(a => a.Id == patientAccount.Id);
-            account?.doctorsAppointment.Add(doctor);
-        }
     }
 }

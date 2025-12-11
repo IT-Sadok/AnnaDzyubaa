@@ -2,11 +2,11 @@
 {
     public class GeneratorId : IGeneratorId
     {
-        public int Id { get; set; } = 100;
+        public int PatientId { get; set; } = 100;
 
-        public int GenerateId()
+        public int GeneratePatientId()
         {
-            return ++Id;
+            return ++PatientId;
         }
     }
 }

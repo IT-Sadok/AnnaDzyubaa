@@ -1,4 +1,5 @@
 ﻿using Hospitals.Models;
+using System.Numerics;
 namespace Hospitals.Services
 {
     public interface IPatientService
@@ -10,9 +11,10 @@ namespace Hospitals.Services
         public IEnumerable<Hospital> ShowHospitalsList();
         public IEnumerable<Doctor>? ShowDoctorsList(string? console);
         public Doctor? SearchSpecificDoctor(string? console);
-        public void ProcessMakingAppointmentWithDoctor(Doctor doctor, Patient patientAccount);
-        public IEnumerable<Doctor>? ShowDoctorsAppointment(Patient patientAccount);
+        public bool ProcessMakingAppointmentWithDoctor(string? console, int patientId);
+        public IEnumerable<Appointment>? ShowDoctorsAppointment(int patientId);
         public bool CancelDoctorsAppointment(string? console, Patient patientAccount);
         public void UpdatePatientPhoneNumber(Patient patientAccount, string? newPhoneNumber);
+        public IEnumerable<Appointment> ShowAvailableAppointmentsOfSpecifiedDoctor(Doctor doctor);
     }
 }
