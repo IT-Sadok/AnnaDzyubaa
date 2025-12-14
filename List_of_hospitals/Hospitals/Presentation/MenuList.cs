@@ -8,6 +8,6 @@
         ShowDoctorsAppointment,
         CancelDoctorsAppointment,
         ChangePatientPhoneNumber,
-        RaceConditionSimulation,
+        RaceConditionSimulationAsync,
         Exit,
 }

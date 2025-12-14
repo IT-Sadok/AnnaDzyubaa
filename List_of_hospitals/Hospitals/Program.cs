@@ -16,5 +16,5 @@ Menu menu = new (patientService);
 
 while (true)
 {
-    await menu.ShowMenu();
+    await menu.ShowMenuAsync();
 }

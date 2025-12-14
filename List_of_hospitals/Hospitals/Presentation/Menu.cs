@@ -382,7 +382,7 @@ public class Menu
         Console.ReadKey();
     }
 
-    public async Task ShowMenu()
+    public async Task ShowMenuAsync()
     {
         Console.Clear();
         Console.WriteLine("Hospital's menu:");
@@ -393,10 +393,10 @@ public class Menu
             Console.WriteLine($"{(int)menuItem}) {menuItem}");
         }
 
-        await ReadUserChoiceFromConsole();
+        await ReadUserChoiceFromConsoleAsync();
     }
 
-    public async Task ReadUserChoiceFromConsole()
+    public async Task ReadUserChoiceFromConsoleAsync()
     {
         Console.WriteLine();
         Console.WriteLine("Make your choise and type number");
@@ -427,10 +427,10 @@ public class Menu
             }
         }
 
-        await ChooseAction();
+        await ChooseActionAsync();
     }
 
-    public async Task ChooseAction()
+    public async Task ChooseActionAsync()
     {
         switch ((MenuList)_userChoiceNumber)
         {
@@ -458,8 +458,8 @@ public class Menu
             case MenuList.ChangePatientPhoneNumber:
                 ChangePatientPhoneNumber();
                 break;
-            case MenuList.RaceConditionSimulation:
-                await RaceConditionSimulation();
+            case MenuList.RaceConditionSimulationAsync:
+                await RaceConditionSimulationAsync();
                 break;
             case MenuList.Exit:
                 Environment.Exit(0);
@@ -470,7 +470,7 @@ public class Menu
         }
     }
 
-    public async Task RaceConditionSimulation()
+    public async Task RaceConditionSimulationAsync()
     {
         int iterationCount = 151;
 
