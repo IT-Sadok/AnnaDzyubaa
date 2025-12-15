@@ -5,6 +5,5 @@ namespace Hospitals.Repositories
     {
         public void AddPatient(Patient patient);
         public IEnumerable<Patient> ShowPatientInfo();
-        public void AddAppointment(Doctor doctor, Patient patientAccount);
     }
 }

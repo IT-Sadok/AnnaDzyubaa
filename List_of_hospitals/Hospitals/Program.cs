@@ -1,18 +1,20 @@
 ﻿using Hospitals.GeneratorId;
 using Hospitals.Logging;
+using Hospitals.Models;
 using Hospitals.Repositories;
 using Hospitals.Services;
 
-DoctorRepository doctorRepository = new DoctorRepository();
-HospitalRepository hospitalRepository = new HospitalRepository();
-PatientRepository patientRepository = new PatientRepository();
-ConsoleLogger logger = new ConsoleLogger();
-GeneratorId generatorId = new GeneratorId();
+DoctorRepository doctorRepository = new ();
+HospitalRepository hospitalRepository = new ();
+PatientRepository patientRepository = new ();
+ConsoleLogger logger = new ();
+GeneratorId generatorId = new ();
+AppointmentRepository appointmentRepository = new ();
 
-PatientService patientService = new PatientService(doctorRepository, hospitalRepository, patientRepository, logger, generatorId);
-Menu menu = new Menu(patientService);
+PatientService patientService = new (doctorRepository, hospitalRepository, patientRepository, logger, generatorId, appointmentRepository);
+Menu menu = new (patientService);
 
 while (true)
 {
-    menu.ShowMenu();
+    await menu.ShowMenuAsync();
 }

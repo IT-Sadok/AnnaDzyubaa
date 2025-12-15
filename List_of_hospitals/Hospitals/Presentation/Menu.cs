@@ -1,10 +1,13 @@
 ﻿using Hospitals.Models;
 using Hospitals.Services;
+using System;
+using System.Numerics;
 
 public class Menu
 {
     private int _userChoiceNumber;
     private IPatientService _patientService;
+    private readonly Lock _lockObject = new();
 
     public Menu(IPatientService patientService)
     {
@@ -181,17 +184,58 @@ public class Menu
         Console.WriteLine();
         Console.WriteLine($"You chose {doctor.FullName} | Specialization {doctor.Specialization}");
         Console.WriteLine();
-        Console.WriteLine($"Press <Enter> to make an appointment with this doctor or <Escape> to quit the selection and return to main menu");
-        Console.WriteLine();
+        
+        var availableAppointmentsList = _patientService.ShowAvailableAppointmentsOfSpecifiedDoctor(doctor);
+
+        if (availableAppointmentsList != null)
+        {
+            Console.WriteLine($"Doctor appointments available:");
+            Console.WriteLine();
+
+            foreach (var appointment in availableAppointmentsList)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Appointment ID: {appointment.AppointmentId} | Day: {appointment.DateAndTime.ToShortDateString()} | Time: {appointment.DateAndTime.ToShortTimeString()}");
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+        }
+        else
+        {
+            Console.WriteLine("This doctor has no available time");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue ...");
+            Console.ReadKey();
+            return;
+        }
 
         while (true)
         {
+            
+            Console.WriteLine();
+            Console.WriteLine($"Press <Enter> to make an appointment with this doctor or <Escape> to quit the selection and return to main menu");
+            Console.WriteLine();
+
             var console = Console.ReadKey().Key;
 
             if (console == ConsoleKey.Enter)
             {
-                _patientService.ProcessMakingAppointmentWithDoctor(doctor, patientAccount);
-                break;
+                Console.WriteLine($"Please, select date and time. Enter the ID of the appointment you wish to register for.");
+                Console.WriteLine();
+
+                var inputId = Console.ReadLine();
+
+                if (_patientService.ProcessMakingAppointmentWithDoctor(inputId, patientAccount.Id))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"You have an appointment with the doctor {doctor.FullName} | Appointment ID: {inputId}");
+                    Console.ResetColor();
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
             else if (console == ConsoleKey.Escape)
             {
@@ -221,7 +265,7 @@ public class Menu
         Console.Clear();
 
         var patientAccount = ShowPacientAccountInfo();
-        var appointments = _patientService.ShowDoctorsAppointment(patientAccount);
+        var appointments = _patientService.ShowDoctorsAppointment(patientAccount.Id);
 
         if (appointments != null)
         {
@@ -229,7 +273,7 @@ public class Menu
             {
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"You have an appointment with {appointment.FullName}, {appointment.Specialization}, personal ID: {appointment.Id}");
+                Console.WriteLine($"You have an appointment with ID: {appointment.AppointmentId} | Day: {appointment.DateAndTime.ToShortDateString()} | Time: {appointment.DateAndTime.ToShortTimeString()} | Doctor`s ID: {appointment.DoctorsId}");
                 Console.ResetColor();
             }
         }
@@ -246,7 +290,7 @@ public class Menu
         Console.Clear();
 
         var patientAccount = ShowPacientAccountInfo();
-        var appointments = _patientService.ShowDoctorsAppointment(patientAccount);
+        var appointments = _patientService.ShowDoctorsAppointment(patientAccount.Id);
 
         if (appointments != null)
         {
@@ -257,11 +301,10 @@ public class Menu
                 Console.WriteLine();
 
                 foreach (var appointment in appointments)
-
                 {
                     Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"You have an appointment with {appointment.FullName}, {appointment.Specialization}, personal ID: {appointment.Id}");
+                    Console.WriteLine($"You have an appointment with ID: {appointment.AppointmentId} | Date and time : {appointment.DateAndTime.ToLocalTime} | Doctor`s ID: {appointment.DoctorsId}");
                     Console.ResetColor();
                 }
 
@@ -339,7 +382,7 @@ public class Menu
         Console.ReadKey();
     }
 
-    public void ShowMenu()
+    public async Task ShowMenuAsync()
     {
         Console.Clear();
         Console.WriteLine("Hospital's menu:");
@@ -350,10 +393,10 @@ public class Menu
             Console.WriteLine($"{(int)menuItem}) {menuItem}");
         }
 
-        ReadUserChoiceFromConsole();
+        await ReadUserChoiceFromConsoleAsync();
     }
 
-    public void ReadUserChoiceFromConsole()
+    public async Task ReadUserChoiceFromConsoleAsync()
     {
         Console.WriteLine();
         Console.WriteLine("Make your choise and type number");
@@ -384,10 +427,10 @@ public class Menu
             }
         }
 
-        ChooseAction();
+        await ChooseActionAsync();
     }
 
-    public void ChooseAction()
+    public async Task ChooseActionAsync()
     {
         switch ((MenuList)_userChoiceNumber)
         {
@@ -415,12 +458,61 @@ public class Menu
             case MenuList.ChangePatientPhoneNumber:
                 ChangePatientPhoneNumber();
                 break;
+            case MenuList.RaceConditionSimulationAsync:
+                await RaceConditionSimulationAsync();
+                break;
             case MenuList.Exit:
                 Environment.Exit(0);
                 break;
             default:
-                Console.WriteLine($"Invalid input, type a number from 1 to 6");
+                Console.WriteLine($"Invalid input, type a number from 1 to {Enum.GetNames(typeof(MenuList)).Length}");
                 break;
         }
+    }
+
+    public async Task RaceConditionSimulationAsync()
+    {
+        int iterationCount = 151;
+
+        Random number = new Random();
+        Random charSymbol = new Random();
+        string appointmentId = "100";
+
+        List<Task> taskList = new ();
+
+        for (int i = 101; i < iterationCount; i++)
+        {
+            int currentPatientId = i;
+
+            taskList.Add(Task.Run(() =>
+            {
+                //lock (_lockObject)
+                //{
+                    var phoneNumber = number.Next(100000000, 999999999).ToString();
+                    var name = charSymbol.Next('a', 'z' + 1).ToString();
+
+                    _patientService.NameValidation(name);
+                    _patientService.PhoneNumberValidation(phoneNumber);
+                    _patientService.AddNewPatient();
+
+                    Console.WriteLine();
+
+                    if (_patientService.ProcessMakingAppointmentWithDoctor(appointmentId, currentPatientId))
+                    {
+                        Console.WriteLine($"| Success! | Patient {currentPatientId} made appoinment with ID {appointmentId}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"| Fail! | Patient {currentPatientId} did not have time");
+                    }
+                //}
+            }));
+        }
+
+        await Task.WhenAll(taskList);
+
+        Console.WriteLine();
+        Console.WriteLine("Press any key to continue ...");
+        Console.ReadKey();
     }
 }

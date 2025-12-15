@@ -3,16 +3,21 @@ using Hospitals.GeneratorId;
 using Hospitals.Logging;
 using Hospitals.Models;
 using Hospitals.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hospitals.Services
 {
-    public class PatientService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository, IPatientRepository hostRepository, ILogger logger, IGeneratorId generatorId) : IPatientService
+    public class PatientService(IDoctorRepository doctorRepository, IHospitalRepository hospitalRepository, IPatientRepository patientRepository, ILogger logger, IGeneratorId generatorId, IAppointmentRepository appointmentRepository) : IPatientService
     {
         private readonly IDoctorRepository _doctorRepository = doctorRepository;
         private readonly IHospitalRepository _hospitalRepository = hospitalRepository;
-        private readonly IPatientRepository _hostRepository = hostRepository;
+        private readonly IPatientRepository _patientRepository = patientRepository;
         private readonly ILogger _logger = logger;
         private readonly IGeneratorId _generatorId = generatorId;
+        private readonly IAppointmentRepository _appointmentRepository = appointmentRepository;
 
         private string? _hostName;
         private int _phoneNumber;
@@ -51,15 +56,15 @@ namespace Hospitals.Services
 
         public void AddNewPatient()
         {
-            var host = new Patient
+            var patient = new Patient
             {
-                Id = _generatorId.GenerateId(),
+                Id = _generatorId.GeneratePatientId(),
                 Name = _hostName,
                 PhoneNumber = _phoneNumber
             };
 
-            _hostRepository.AddPatient(host);
-            _logger.LogInfo($"Patient account has created successfully. Your ID: {_generatorId.Id}");
+            _patientRepository.AddPatient(patient);
+            _logger.LogInfo($"Patient account has created successfully. Your ID: {patient.Id}");
         }
 
         public Patient? SearchPatientById(string? id)
@@ -72,10 +77,10 @@ namespace Hospitals.Services
 
             if (Int32.TryParse(id, out int number))
             {
-                Patient? host = _hostRepository.ShowPatientInfo().FirstOrDefault(h => h.Id == number);
-                if (host != null)
+                Patient? patient = _patientRepository.ShowPatientInfo().FirstOrDefault(h => h.Id == number);
+                if (patient != null)
                 {
-                    return host;
+                    return patient;
                 }
                 else
                 {
@@ -104,12 +109,11 @@ namespace Hospitals.Services
                 return false;
             }
 
-            var appointment = patientAccount.doctorsAppointment.FirstOrDefault(i => i.Id == number);
+            var appointment = _appointmentRepository.RemoveAppointment(number);
 
-            if (appointment != null)
+            if (appointment)
             {
-                patientAccount.doctorsAppointment.Remove(appointment);
-                _logger.LogInfo($"Your appointment with {appointment.FullName} has just canceled");
+                _logger.LogInfo($"Your appointment with ID {number} has just canceled");
                 return true;
             }
             else
@@ -143,22 +147,45 @@ namespace Hospitals.Services
             return doctor;
         }
 
-        public void ProcessMakingAppointmentWithDoctor(Doctor doctor, Patient patientAccount)
+        public bool ProcessMakingAppointmentWithDoctor(string? console, int patientId)
         {
-            _hostRepository.AddAppointment(doctor, patientAccount);
-            _logger.LogInfo($"You have an appointment with the doctor {doctor.FullName}");
+            if (string.IsNullOrWhiteSpace(console))
+            {
+                _logger.LogWarning("ID can`t be empty. Please, type again");
+                return false;
+            }
+
+            if (Int32.TryParse(console, out int apointmentId))
+            {
+                if (_appointmentRepository.AddPatientAppointment(apointmentId, patientId))
+                {
+                    return true;
+                }
+                else
+                {
+                    _logger.LogWarning($"ID {console} is not found. Please, try again");
+                    return false;
+                }
+            }
+            else
+            {
+                _logger.LogError("Invalid data entry. Please, use numbers only");
+                return false;
+            }
         }
 
-        public IEnumerable<Doctor>? ShowDoctorsAppointment(Patient patientAccount)
+        public IEnumerable<Appointment>? ShowDoctorsAppointment(int patientId)
         {
-            if (patientAccount.doctorsAppointment.Count == 0)
+            var appointments = _appointmentRepository.ShowPatientAppointments(patientId);
+
+            if (appointments == null)
             {
                 _logger.LogInfo("You have no appointment with doctor");
                 return null;
             }
             else
             {
-                return patientAccount.doctorsAppointment;
+                return appointments;
             }
         }
 
@@ -194,5 +221,19 @@ namespace Hospitals.Services
         }
 
         public IEnumerable<Hospital> ShowHospitalsList() => _hospitalRepository.ShowHospitalsList();
+
+        public IEnumerable<Appointment> ShowAvailableAppointmentsOfSpecifiedDoctor(Doctor doctor)
+        {
+            List<Appointment>? appointmentsTime = new ();
+
+            foreach (var appointment in _appointmentRepository.ShowAppointmentsList()
+                .Where(a => a.DoctorsId == doctor.Id)
+                .OrderBy(a => a.DateAndTime))
+            {
+                appointmentsTime.Add(appointment);
+            }
+
+            return appointmentsTime;
+        }
     }
 }
