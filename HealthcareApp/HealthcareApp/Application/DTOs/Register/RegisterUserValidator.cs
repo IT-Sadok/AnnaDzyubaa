@@ -23,7 +23,7 @@ namespace HealthcareApp.Application.DTOs.Register
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password cannot be empty.")
-                .MinimumLength(6).WithMessage("Last Name cannot be less than 6 characters");
+                .MinimumLength(6).WithMessage("Password cannot be less than 6 characters");
 
             RuleFor(x => x.Role)
                 .NotEmpty().WithMessage("Role cannot be empty.");

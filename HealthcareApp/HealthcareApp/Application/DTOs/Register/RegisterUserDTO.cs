@@ -7,5 +7,4 @@
         string Password,
         string Role
     );
-    
 }

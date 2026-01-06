@@ -1,5 +1,6 @@
 ﻿using HealthcareApp.Application.Abstractions;
 using HealthcareApp.Application.DTOs.Register;
+using HealthcareApp.Application.DTOs.Result;
 using HealthcareApp.Domain.Constants;
 using HealthcareApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -14,15 +15,11 @@ namespace HealthcareApp.Application.Implementations
         {
             _userManager = userManager;
         }
-        public async Task<IdentityResult> RegisterAsync(RegisterUserDTO registerUserDTO)
+        public async Task<Result<string>> RegisterAsync(RegisterUserDTO registerUserDTO)
         {
             if (!UserRolesConstants.IsRoleAllowed(registerUserDTO.Role))
             {
-                return IdentityResult.Failed(new IdentityError
-                {
-                    Code = "InvalidRole", 
-                    Description = $"Role {registerUserDTO.Role} is not valid."
-                });
+                return Result<string>.Failure($"Role {registerUserDTO.Role} is not valid.");
             }
 
             var user = new ApplicationUser
@@ -38,9 +35,11 @@ namespace HealthcareApp.Application.Implementations
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, registerUserDTO.Role);
+                return Result<string>.Success(user.Id);
             }
 
-            return result;
+            var errors = result.Errors.Select(e => e.Description);
+            return Result<string>.Failure(errors);
         }
     }
 }

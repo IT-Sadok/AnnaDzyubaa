@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HealthcareApp.Application.DTOs.Register;
 using HealthcareApp.Application.Abstractions;
+using HealthcareApp.Application.DTOs.Result;
 
 namespace HealthcareApp.Api.Controllers
 {
@@ -18,12 +19,7 @@ namespace HealthcareApp.Api.Controllers
         {
             var result = await _userAuthenticationService.RegisterAsync(registerUserDto);
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            return BadRequest(result.Errors);
+            return result.ToResponse();
         }
     };
 }
