@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApp", "HealthcareApp\HealthcareApp.csproj", "{30E37E8E-5FEF-4D27-A4B1-08FDC3F95912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApp.Domain", "HealthcareApp.Domain\HealthcareApp.Domain.csproj", "{55CE01FE-8354-4C0E-8419-3A93197B947F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApp.Application", "HealthcareApp.Application\HealthcareApp.Application.csproj", "{D783DB20-EF93-426B-B923-3F3930F2CB41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApp.Infrastructure", "HealthcareApp.Infrastructure\HealthcareApp.Infrastructure.csproj", "{6AF87FC2-B328-441B-A770-233A1D88C5F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApp.Api", "HealthcareApp.Api\HealthcareApp.Api.csproj", "{62D5FD2D-1426-4C7F-85F2-E7498D1C3950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{30E37E8E-5FEF-4D27-A4B1-08FDC3F95912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30E37E8E-5FEF-4D27-A4B1-08FDC3F95912}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30E37E8E-5FEF-4D27-A4B1-08FDC3F95912}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30E37E8E-5FEF-4D27-A4B1-08FDC3F95912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55CE01FE-8354-4C0E-8419-3A93197B947F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55CE01FE-8354-4C0E-8419-3A93197B947F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55CE01FE-8354-4C0E-8419-3A93197B947F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55CE01FE-8354-4C0E-8419-3A93197B947F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D783DB20-EF93-426B-B923-3F3930F2CB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D783DB20-EF93-426B-B923-3F3930F2CB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D783DB20-EF93-426B-B923-3F3930F2CB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D783DB20-EF93-426B-B923-3F3930F2CB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AF87FC2-B328-441B-A770-233A1D88C5F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AF87FC2-B328-441B-A770-233A1D88C5F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AF87FC2-B328-441B-A770-233A1D88C5F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AF87FC2-B328-441B-A770-233A1D88C5F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D5FD2D-1426-4C7F-85F2-E7498D1C3950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D5FD2D-1426-4C7F-85F2-E7498D1C3950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D5FD2D-1426-4C7F-85F2-E7498D1C3950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D5FD2D-1426-4C7F-85F2-E7498D1C3950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

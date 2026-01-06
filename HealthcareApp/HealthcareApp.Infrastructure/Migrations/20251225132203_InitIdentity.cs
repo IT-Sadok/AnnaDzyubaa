@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace HealthcareApp.Migrations
+namespace HealthcareApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitIdentity : Migration

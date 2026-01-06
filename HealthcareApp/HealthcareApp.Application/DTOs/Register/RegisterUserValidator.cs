@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Rewrite;
 
 namespace HealthcareApp.Application.DTOs.Register
 {
