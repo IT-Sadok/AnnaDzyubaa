@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HealthcareApp.Application.DTOs.Register;
+using HealthcareApp.Application.DTOs.Login;
 using HealthcareApp.Application.Abstractions;
 using HealthcareApp.Application.DTOs.Result;
+using Microsoft.AspNetCore.Identity.Data;
 
 namespace HealthcareApp.Api.Controllers
 {
@@ -18,6 +20,14 @@ namespace HealthcareApp.Api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterUserDTO registerUserDto)
         {
             var result = await _userAuthenticationService.RegisterAsync(registerUserDto);
+
+            return result.ToResponse();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDTO loginUserDTO)
+        {
+            var result = await _userAuthenticationService.LoginAsync(loginUserDTO);
 
             return result.ToResponse();
         }

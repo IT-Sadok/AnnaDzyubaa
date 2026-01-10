@@ -9,9 +9,17 @@ namespace HealthcareApp.Application.DTOs.Result
         {
             if (result.IsSuccess)
             {
-                return successMessage != null
-                    ? new OkObjectResult(successMessage) 
-                    : new OkResult();
+                if (successMessage != null)
+                {
+                    return new OkObjectResult(successMessage);
+                }
+                else if (result.Body != null)
+                {
+                    return new OkObjectResult(result.Body);
+                }else
+                {
+                    return new OkResult();
+                }
             }
 
             return new BadRequestObjectResult(result.Error);

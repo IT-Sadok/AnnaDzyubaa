@@ -19,10 +19,5 @@ namespace HealthcareApp.Application.DTOs.Result
         public static Result<T> Failure(string error) => new Result<T>(false, new[] { error }, default);
         public static Result<T> Failure(IEnumerable<string> errors) => new Result<T>(false, errors, default);
         public static Result<T> Success(T? body = default) => new Result<T>(true, Array.Empty<string>(), body);
-        
-        internal static Result<string> Failed(IdentityError identityError)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
