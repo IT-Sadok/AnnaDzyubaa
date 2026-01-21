@@ -14,6 +14,7 @@ using HealthcareApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using HealthcareApp.Application.Abstractions.Decorators;
 
 namespace HealthcareApp.Infrastructure
 {
@@ -55,6 +56,7 @@ namespace HealthcareApp.Infrastructure
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+            services.AddScoped<IUserManagerDecorator<ApplicationUser>, UserManagerDecorator<ApplicationUser>>();
 
             return services;
         }

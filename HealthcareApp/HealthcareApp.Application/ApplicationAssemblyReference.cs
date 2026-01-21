@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthcareApp.Application
 {
-    internal class ApplicationAssemblyReference
+    public class ApplicationAssemblyReference
     {
     }
 }
