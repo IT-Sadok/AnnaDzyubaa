@@ -1,25 +1,26 @@
 ﻿using HealthcareApp.Application.Abstractions.Decorators;
+using HealthcareApp.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace HealthcareApp.Infrastructure.Repository
 {
-    public class UserManagerDecorator<TUser> : IUserManagerDecorator<TUser> where TUser : class
+    public class UserManagerDecorator : IUserManagerDecorator
     {
-        private readonly UserManager<TUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserManagerDecorator(UserManager<TUser> userManager)
+        public UserManagerDecorator(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        public Task<IdentityResult> AddToRoleAsync(TUser user, string role) => _userManager.AddToRoleAsync(user, role);
+        public Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string role) => _userManager.AddToRoleAsync(user, role);
 
-        public Task<bool> CheckPasswordAsync(TUser user, string password) => _userManager.CheckPasswordAsync(user, password);
+        public Task<bool> CheckPasswordAsync(ApplicationUser user, string password) => _userManager.CheckPasswordAsync(user, password);
 
-        public Task<IdentityResult> CreateAsync(TUser user, string password) => _userManager.CreateAsync(user, password);
+        public Task<IdentityResult> CreateAsync(ApplicationUser user, string password) => _userManager.CreateAsync(user, password);
 
-        public Task<TUser?> FindByEmailAsync(string email) => _userManager.FindByEmailAsync(email);
+        public Task<ApplicationUser?> FindByEmailAsync(string email) => _userManager.FindByEmailAsync(email);
 
-        public Task<IList<string>> GetRolesAsync(TUser user) => _userManager.GetRolesAsync(user);
+        public Task<IList<string>> GetRolesAsync(ApplicationUser user) => _userManager.GetRolesAsync(user);
     }
 }

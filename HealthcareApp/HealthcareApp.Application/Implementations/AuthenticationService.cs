@@ -13,10 +13,10 @@ namespace HealthcareApp.Application.Implementations
 {
     public class AuthenticationService : IUserAuthenticationService
     {
-        private readonly IUserManagerDecorator<ApplicationUser> _userManager;
+        private readonly IUserManagerDecorator _userManager;
         private readonly ITokenGeneratorService _tokenGeneratorService;
 
-        public AuthenticationService(IUserManagerDecorator<ApplicationUser> userManager, ITokenGeneratorService tokenGeneratorService)
+        public AuthenticationService(IUserManagerDecorator userManager, ITokenGeneratorService tokenGeneratorService)
         {
             _userManager = userManager;
             _tokenGeneratorService = tokenGeneratorService;

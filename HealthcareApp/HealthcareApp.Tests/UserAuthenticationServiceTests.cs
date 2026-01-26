@@ -14,14 +14,14 @@ namespace HealthcareApp.Tests
 {
     public class UserAuthenticationServiceTests
     {
-        private readonly IUserManagerDecorator<ApplicationUser> _userManagerDecorator;
+        private readonly IUserManagerDecorator _userManagerDecorator;
         private readonly ITokenGeneratorService _tokenGeneratorService;
 
         private readonly IUserAuthenticationService _userAuthenticationService;
 
         public UserAuthenticationServiceTests()
         {
-            _userManagerDecorator = Substitute.For<IUserManagerDecorator<ApplicationUser>>();
+            _userManagerDecorator = Substitute.For<IUserManagerDecorator>();
             _tokenGeneratorService = Substitute.For<ITokenGeneratorService>();
 
             _userAuthenticationService = new AuthenticationService(_userManagerDecorator, _tokenGeneratorService);

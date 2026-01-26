@@ -56,7 +56,7 @@ namespace HealthcareApp.Infrastructure
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
-            services.AddScoped<IUserManagerDecorator<ApplicationUser>, UserManagerDecorator<ApplicationUser>>();
+            services.AddScoped<IUserManagerDecorator, UserManagerDecorator>();
 
             return services;
         }
