@@ -7,17 +7,16 @@ using Microsoft.AspNetCore.Identity;
 using Mapster;
 using HealthcareApp.Application.DTOs.Login;
 using Microsoft.Extensions.Configuration;
-
-//TODO: Refactor UserManager to Wrapper for Unit Tests
+using HealthcareApp.Application.Abstractions.Decorators;
 
 namespace HealthcareApp.Application.Implementations
 {
     public class AuthenticationService : IUserAuthenticationService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserManagerDecorator _userManager;
         private readonly ITokenGeneratorService _tokenGeneratorService;
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager, ITokenGeneratorService tokenGeneratorService)
+        public AuthenticationService(IUserManagerDecorator userManager, ITokenGeneratorService tokenGeneratorService)
         {
             _userManager = userManager;
             _tokenGeneratorService = tokenGeneratorService;
@@ -61,4 +60,4 @@ namespace HealthcareApp.Application.Implementations
             return Result<string>.Failure(errors);
         }
     }
-}
+} 
