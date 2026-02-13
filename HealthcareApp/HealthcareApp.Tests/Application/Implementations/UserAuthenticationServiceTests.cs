@@ -10,7 +10,7 @@ using NSubstitute;
 using System.Collections.Generic;
 using System.Data;
 
-namespace HealthcareApp.Tests
+namespace HealthcareApp.Tests.Application.Implementations
 {
     public class UserAuthenticationServiceTests
     {
@@ -146,7 +146,9 @@ namespace HealthcareApp.Tests
             var loginUserDTO = new LoginUserDTO("test@gmail.com", "Password123!");
             ApplicationUser? user = null;
 
-            _userManagerDecorator.FindByEmailAsync(loginUserDTO.Email).Returns(user);
+            _userManagerDecorator
+                .FindByEmailAsync(loginUserDTO.Email)
+                .Returns(user);
 
 
             //Act
@@ -169,8 +171,12 @@ namespace HealthcareApp.Tests
             var loginUserDTO = new LoginUserDTO("test@gmail.com", "Password123!");
             var user = new ApplicationUser { Email = loginUserDTO.Email };
 
-            _userManagerDecorator.FindByEmailAsync(loginUserDTO.Email).Returns(user);
-            _userManagerDecorator.CheckPasswordAsync(user, loginUserDTO.Password).Returns(false);
+            _userManagerDecorator
+                .FindByEmailAsync(loginUserDTO.Email)
+                .Returns(user);
+            _userManagerDecorator
+                .CheckPasswordAsync(user, loginUserDTO.Password)
+                .Returns(false);
 
 
             //Act

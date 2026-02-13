@@ -3,6 +3,7 @@ using System;
 using HealthcareApp.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HealthcareApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260129150355_AddAppointmentsTable")]
+    partial class AddAppointmentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,6 +107,7 @@ namespace HealthcareApp.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DoctorId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("DurationMinutes")
@@ -113,6 +117,7 @@ namespace HealthcareApp.Infrastructure.Migrations
                         .HasColumnType("interval");
 
                     b.Property<string>("PatientId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<TimeSpan>("StartTime")
@@ -123,10 +128,9 @@ namespace HealthcareApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("DoctorId");
 
-                    b.HasIndex("DoctorId", "AppointmentDate", "StartTime")
-                        .IsUnique();
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
@@ -268,12 +272,14 @@ namespace HealthcareApp.Infrastructure.Migrations
                     b.HasOne("HealthcareApp.Domain.Entities.ApplicationUser", "Doctor")
                         .WithMany("DoctorAppointments")
                         .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("HealthcareApp.Domain.Entities.ApplicationUser", "Patient")
                         .WithMany("PatientAppointments")
                         .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Doctor");
 

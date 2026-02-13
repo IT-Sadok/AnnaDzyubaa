@@ -21,6 +21,9 @@ namespace HealthcareApp.Infrastructure.Repository
 
         public Task<ApplicationUser?> FindByEmailAsync(string email) => _userManager.FindByEmailAsync(email);
 
+        public Task<ApplicationUser?> FindByIdAsync(string id) => _userManager.FindByIdAsync(id);
+
         public Task<IList<string>> GetRolesAsync(ApplicationUser user) => _userManager.GetRolesAsync(user);
+
     }
 }

@@ -27,7 +27,7 @@ namespace HealthcareApp.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("Database"),
-                    b => b.MigrationsAssembly("Healthcare.Infrastructure"));
+                    b => b.MigrationsAssembly("HealthcareApp.Infrastructure"));
             });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -57,6 +57,7 @@ namespace HealthcareApp.Infrastructure
 
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             services.AddScoped<IUserManagerDecorator, UserManagerDecorator>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
             return services;
         }
