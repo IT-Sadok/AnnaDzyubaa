@@ -1,0 +1,86 @@
+{
+  "doctors": [
+    {
+      "externalId": "doc-001",
+      "fullName": "Gregory House",
+      "email": "house@princeton-plainsboro.com",
+      "appointments": [
+        {
+          "date": "2024-03-20T10:00:00",
+          "patientExternalId": "pat-001"
+        },
+        {
+          "date": "2024-03-20T11:00:00",
+          "patientExternalId": "pat-002"
+        }
+      ]
+    },
+    {
+      "externalId": "doc-002",
+      "fullName": "James Wilson",
+      "email": "wilson@princeton-plainsboro.com",
+      "appointments": []
+    },
+    {
+      "externalId": "doc-003",
+      "fullName": "Lisa Cuddy",
+      "email": "cuddy@princeton-plainsboro.com",
+      "appointments": [
+        {
+          "date": "2024-03-21T09:00:00",
+          "patientExternalId": "pat-003"
+        }
+      ]
+    },
+    {
+      "externalId": "doc-004",
+      "fullName": "Eric Foreman",
+      "email": "foreman@princeton-plainsboro.com",
+      "appointments": []
+    },
+    {
+      "externalId": "doc-005",
+      "fullName": "Allison Cameron",
+      "email": "cameron@princeton-plainsboro.com",
+      "appointments": [
+        {
+          "date": "2024-03-22T14:00:00",
+          "patientExternalId": "pat-001"
+        }
+      ]
+    },
+    {
+      "externalId": "doc-006",
+      "fullName": "Robert Chase",
+      "email": "chase@princeton-plainsboro.com",
+      "appointments": []
+    }
+  ],
+  "patients": [
+    {
+      "externalId": "pat-001",
+      "fullName": "John Doe",
+      "email": "johndoe@example.com"
+    },
+    {
+      "externalId": "pat-002",
+      "fullName": "Jane Smith",
+      "email": "janesmith@example.com"
+    },
+    {
+      "externalId": "pat-003",
+      "fullName": "Alice Johnson",
+      "email": "alicej@example.com"
+    },
+    {
+      "externalId": "pat-004",
+      "fullName": "Bob Brown",
+      "email": "bobbrown@example.com"
+    },
+    {
+      "externalId": "pat-005",
+      "fullName": "Charlie Black",
+      "email": "charlieb@example.com"
+    }
+  ]
+}
