@@ -30,6 +30,7 @@ namespace HealthcareApp.Infrastructure.Repository
 
             var userClaims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim("FirstName", user?.FirstName ?? ""),
                 new Claim("LastName", user?.LastName ?? ""),
                 new Claim("Email", user?.Email ?? "")

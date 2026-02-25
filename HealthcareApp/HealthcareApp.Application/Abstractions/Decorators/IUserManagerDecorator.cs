@@ -15,5 +15,6 @@ namespace HealthcareApp.Application.Abstractions.Decorators
         Task<ApplicationUser?> FindByEmailAsync(string email);
         Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
         Task<IList<string>> GetRolesAsync(ApplicationUser user);
+        Task<ApplicationUser?> FindByIdAsync(string id);
     }
 }

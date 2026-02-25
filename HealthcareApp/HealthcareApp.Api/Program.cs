@@ -11,6 +11,8 @@ using HealthcareApp.Application.Abstractions;
 using HealthcareApp.Application.Implementations;
 using HealthcareApp.Application;
 using HealthcareApp.Application.DTOs.Login;
+using Microsoft.OpenApi.Models;
+using HealthcareApp.Api;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,9 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddSwaggerWithAuth();
 
 builder.Services
     .AddApplication()
