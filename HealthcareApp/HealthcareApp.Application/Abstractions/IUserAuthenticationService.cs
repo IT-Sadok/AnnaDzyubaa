@@ -7,8 +7,8 @@ namespace HealthcareApp.Application.Abstractions
 {
     public interface IUserAuthenticationService
     {
-        public Task<Result<string>> RegisterAsync(RegisterUserDTO registerUserDTO);
+        public Task<Result<RegisterResponse>> RegisterAsync(RegisterUserDTO registerUserDTO);
 
-        public Task<Result<string>> LoginAsync(LoginUserDTO loginUserDTO);
+        public Task<Result<LoginResponse>> LoginAsync(LoginUserDTO loginUserDTO);
     }
 }

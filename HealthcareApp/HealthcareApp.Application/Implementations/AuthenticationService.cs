@@ -22,27 +22,27 @@ namespace HealthcareApp.Application.Implementations
             _tokenGeneratorService = tokenGeneratorService;
         }
 
-        public async Task<Result<string>> LoginAsync(LoginUserDTO loginUserDTO)
+        public async Task<Result<LoginResponse>> LoginAsync(LoginUserDTO loginUserDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginUserDTO.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginUserDTO.Password))
             {
-                return Result<string>.Failure("Invalid email or password");
+                return "Invalid email or password";
             }
 
             var roles = await _userManager.GetRolesAsync(user);
 
             var token = await _tokenGeneratorService.GenerateJwtToken(user, roles.ToList());
 
-            return Result<string>.Success(token);
+            return new LoginResponse(token);
         }
 
-        public async Task<Result<string>> RegisterAsync(RegisterUserDTO registerUserDTO)
+        public async Task<Result<RegisterResponse>> RegisterAsync(RegisterUserDTO registerUserDTO)
         {
             if (!UserRolesConstants.IsRoleAllowed(registerUserDTO.Role))
             {
-                return Result<string>.Failure($"Role {registerUserDTO.Role} is not valid.");
+                return $"Role {registerUserDTO.Role} is not valid.";
             }
 
             var user = registerUserDTO.Adapt<ApplicationUser>();
@@ -53,11 +53,11 @@ namespace HealthcareApp.Application.Implementations
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, registerUserDTO.Role);
-                return Result<string>.Success(user.Id);
+                return new RegisterResponse(user.Id);
             }
 
             var errors = result.Errors.Select(e => e.Description);
-            return Result<string>.Failure(errors);
+            return Result<RegisterResponse>.Failure(result.Errors.Select(e => e.Description));
         }
     }
 } 

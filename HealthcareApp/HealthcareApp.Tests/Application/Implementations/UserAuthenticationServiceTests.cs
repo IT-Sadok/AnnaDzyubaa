@@ -10,7 +10,7 @@ using NSubstitute;
 using System.Collections.Generic;
 using System.Data;
 
-namespace HealthcareApp.Tests
+namespace HealthcareApp.Tests.Application.Implementations
 {
     public class UserAuthenticationServiceTests
     {
@@ -50,7 +50,8 @@ namespace HealthcareApp.Tests
 
             result.IsSuccess.Should().BeTrue();
 
-            result.Body.Should().NotBeNullOrEmpty();
+            result.Body.Should().NotBeNull();
+            result.Body.UserId.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -134,8 +135,7 @@ namespace HealthcareApp.Tests
 
             result.Error.Should().BeNullOrEmpty();
 
-            result.Body.Should().Be(token);
-
+            result.Body!.Token.Should().Be(token);
          }
 
         [Fact]
@@ -146,7 +146,9 @@ namespace HealthcareApp.Tests
             var loginUserDTO = new LoginUserDTO("test@gmail.com", "Password123!");
             ApplicationUser? user = null;
 
-            _userManagerDecorator.FindByEmailAsync(loginUserDTO.Email).Returns(user);
+            _userManagerDecorator
+                .FindByEmailAsync(loginUserDTO.Email)
+                .Returns(user);
 
 
             //Act
@@ -157,7 +159,7 @@ namespace HealthcareApp.Tests
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNullOrEmpty();
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeNull();
         }
 
         [Fact]
@@ -169,8 +171,12 @@ namespace HealthcareApp.Tests
             var loginUserDTO = new LoginUserDTO("test@gmail.com", "Password123!");
             var user = new ApplicationUser { Email = loginUserDTO.Email };
 
-            _userManagerDecorator.FindByEmailAsync(loginUserDTO.Email).Returns(user);
-            _userManagerDecorator.CheckPasswordAsync(user, loginUserDTO.Password).Returns(false);
+            _userManagerDecorator
+                .FindByEmailAsync(loginUserDTO.Email)
+                .Returns(user);
+            _userManagerDecorator
+                .CheckPasswordAsync(user, loginUserDTO.Password)
+                .Returns(false);
 
 
             //Act
@@ -181,7 +187,7 @@ namespace HealthcareApp.Tests
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNullOrEmpty();
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeNull();
         }
     }
 }
