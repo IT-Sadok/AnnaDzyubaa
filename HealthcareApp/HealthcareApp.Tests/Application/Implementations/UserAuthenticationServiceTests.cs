@@ -50,7 +50,8 @@ namespace HealthcareApp.Tests.Application.Implementations
 
             result.IsSuccess.Should().BeTrue();
 
-            result.Body.Should().NotBeNullOrEmpty();
+            result.Body.Should().NotBeNull();
+            result.Body.UserId.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -134,8 +135,7 @@ namespace HealthcareApp.Tests.Application.Implementations
 
             result.Error.Should().BeNullOrEmpty();
 
-            result.Body.Should().Be(token);
-
+            result.Body!.Token.Should().Be(token);
          }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace HealthcareApp.Tests.Application.Implementations
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNullOrEmpty();
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeNull();
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace HealthcareApp.Tests.Application.Implementations
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNullOrEmpty();
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeNull();
         }
     }
 }

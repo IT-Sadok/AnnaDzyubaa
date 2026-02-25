@@ -11,7 +11,6 @@ namespace HealthcareApp.Application.Appointments.Commands.Book
     public record BookAppointmentCommand(
         string DoctorId, 
         string PatientId, 
-        DateTime AppointmentDate, 
-        TimeSpan StartTime) 
-        : IRequest<Result<string>>;
+        DateTime StartTime)
+        : IRequest<Result<int>>;
 }

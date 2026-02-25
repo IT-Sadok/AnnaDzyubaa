@@ -8,9 +8,8 @@ namespace HealthcareApp.Application.DTOs.Appointment
 {
     public record AppointmentDTO(int Id, 
         string? DoctorId,
-        DateTime AppointmentDate,
-        TimeSpan StartTime,
-        TimeSpan EndTime,
+        DateTime StartTime,
+        DateTime EndTime,
         string Status
         );
 }

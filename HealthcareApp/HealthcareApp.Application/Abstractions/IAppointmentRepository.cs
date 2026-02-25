@@ -12,7 +12,7 @@ namespace HealthcareApp.Application.Abstractions
     {
         Task<List<AppointmentDTO>> GetPatientAppointments(string patientId, int pageNumber, int pageSize, DateTime? start = null, DateTime? end = null);
         Task<Appointment?> GetByIdAsync(int id);
-        Task<bool> IsAvailableAsync(string doctorId, DateTime date, TimeSpan startTime);
+        Task<bool> IsAvailableAsync(string doctorId, DateTime startTime);
         Task AddAppointmentAsync(Appointment appointment);
     }
 }

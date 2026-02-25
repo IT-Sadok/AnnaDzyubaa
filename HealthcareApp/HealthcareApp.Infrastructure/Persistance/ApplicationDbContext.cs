@@ -28,10 +28,6 @@ namespace HealthcareApp.Infrastructure.Persistance
                 .WithMany(u => u.PatientAppointments)
                 .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Appointment>()
-                .HasIndex(a => new { a.DoctorId, a.AppointmentDate, a.StartTime })
-                .IsUnique();
         }
     }
 }

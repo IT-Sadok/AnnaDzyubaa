@@ -14,6 +14,7 @@ namespace HealthcareApp.Infrastructure.Repository
     public class AppointmentRepository : IAppointmentRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly TimeSpan _appointmentDuration = TimeSpan.FromMinutes(20);
 
         public AppointmentRepository(ApplicationDbContext context)
         {
@@ -37,37 +38,35 @@ namespace HealthcareApp.Infrastructure.Repository
 
             if (start != null)
             {
-                query = query.Where(x => x.AppointmentDate >= start.Value);
+                query = query.Where(x => x.StartTime >= start.Value);
             }
 
             if (end != null)
             {
-                query = query.Where(x => x.AppointmentDate <= end.Value);
+                query = query.Where(x => x.StartTime <= end.Value);
             }
 
-
-                return await query.OrderBy(x => x.AppointmentDate)
+                return await query.OrderBy(x => x.StartTime)
                 .ThenBy(x => x.StartTime)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => new AppointmentDTO(
                     x.Id, x.DoctorId, 
-                    x.AppointmentDate,
-                    x.StartTime, 
+                    x.StartTime,
                     x.EndTime, 
                     x.Status.ToString()))
                 .ToListAsync();
         }
 
-        public async Task<bool> IsAvailableAsync(string doctorId, DateTime date, TimeSpan startTime)
+        public async Task<bool> IsAvailableAsync(string doctorId, DateTime startTime)
         {
-            date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+            startTime = DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
 
-            var endTime = startTime.Add(TimeSpan.FromMinutes(20));
+            var endTime = startTime.Add(_appointmentDuration);
 
             var existingAppointment = await _context.Appointments
                 .SingleOrDefaultAsync(a => a.DoctorId == doctorId &&
-                a.AppointmentDate == date && 
+                a.StartTime == startTime && 
                 (a.StartTime < endTime && a.EndTime > startTime));
 
             return existingAppointment == null;

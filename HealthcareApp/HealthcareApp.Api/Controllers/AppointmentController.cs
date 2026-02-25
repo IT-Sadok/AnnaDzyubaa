@@ -22,7 +22,7 @@ namespace HealthcareApp.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("request")]
+        [HttpPost]
         [Authorize(Roles = UserRolesConstants.Patient)]
         public async Task<IActionResult> RequestAppointment([FromBody] BookAppointmentCommand command)
         {

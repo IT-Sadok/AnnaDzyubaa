@@ -14,9 +14,8 @@ namespace HealthcareApp.Domain.Entities
         public string? DoctorId { get; set; }
         public ApplicationUser? Patient { get; set; }
         public ApplicationUser? Doctor { get; set; }
-        public DateTime AppointmentDate { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public AppointmentStatuses Status { get; set; }
         public int DurationMinutes { get; set; }
 

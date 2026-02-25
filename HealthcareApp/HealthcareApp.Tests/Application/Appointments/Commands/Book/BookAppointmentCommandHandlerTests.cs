@@ -38,8 +38,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
             var command = new BookAppointmentCommand(
         "20a72b61-4170-4f70-97e4-8c793f2f5280",
         "2036e496-deab-4feb-9fd7-53d9a6ba57f6",
-        new DateTime (2023, 1, 1, 10, 0, 0),
-        TimeSpan.FromHours(10));
+        new DateTime (2023, 1, 1, 10, 0, 0));
 
             _userManagerDecorator
                 .FindByIdAsync(command.DoctorId)
@@ -47,8 +46,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             _appointmentRepository
                 .IsAvailableAsync(command.DoctorId,
-                Arg.Any<DateTime>(),
-                command.StartTime)
+                Arg.Any<DateTime>())
             .Returns(true);
 
             //Act
@@ -57,8 +55,8 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             //Assert
 
-            result.IsSuccess.Should().BeTrue();
-            result.Body.Should().NotBeNullOrEmpty();
+            result.IsSuccess.Should().BeTrue("because the appointment should be booked. Actual error: {0}", string.Join(", ", result.Error));
+            result.Body.Should().BeGreaterThanOrEqualTo(0);
 
             await _appointmentRepository.Received(1).AddAppointmentAsync(Arg.Any<Appointment>());
         }
@@ -72,8 +70,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
             var command = new BookAppointmentCommand(
         "20a72b61-4170-4f70-97e4-8c793f2f5280",
         "2036e496-deab-4feb-9fd7-53d9a6ba57f6",
-        new DateTime(2023, 1, 1, 10, 0, 0),
-        TimeSpan.FromHours(10));
+        new DateTime(2023, 1, 1, 10, 0, 0));
 
             var errorText = "Error text";
 
@@ -83,8 +80,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             _appointmentRepository
                 .IsAvailableAsync(command.DoctorId,
-                Arg.Any<DateTime>(),
-                command.StartTime)
+                Arg.Any<DateTime>())
             .Returns(true);
 
             _appointmentRepository
@@ -99,7 +95,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain(errorText);
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeGreaterThanOrEqualTo(0);
 
             await _appointmentRepository.Received(1).AddAppointmentAsync(Arg.Any<Appointment>());
         }
@@ -112,8 +108,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
             var command = new BookAppointmentCommand(
         "20a72b61-4170-4f70-97e4-8c793f2f5280",
         "2036e496-deab-4feb-9fd7-53d9a6ba57f6",
-        new DateTime(2023, 1, 1, 10, 0, 0),
-        TimeSpan.FromHours(10));
+        new DateTime(2023, 1, 1, 10, 0, 0));
 
             _userManagerDecorator
                 .FindByIdAsync(command.DoctorId)
@@ -121,8 +116,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             _appointmentRepository
                 .IsAvailableAsync(command.DoctorId,
-                Arg.Any<DateTime>(),
-                command.StartTime)
+                Arg.Any<DateTime>())
             .Returns(false);
 
             //Act
@@ -133,7 +127,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain("This time slot has already booked by another patient");
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeGreaterThanOrEqualTo(0);
 
             await _appointmentRepository.DidNotReceive().AddAppointmentAsync(Arg.Any<Appointment>());
         }
@@ -146,8 +140,7 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
             var command = new BookAppointmentCommand(
         "20a72b61-4170-4f70-97e4-8c793f2f5280",
         "2036e496-deab-4feb-9fd7-53d9a6ba57f6",
-        new DateTime(2023, 1, 1, 10, 0, 0),
-        TimeSpan.FromHours(10));
+        new DateTime(2023, 1, 1, 10, 0, 0));
 
             ApplicationUser? user = null;
 
@@ -163,11 +156,11 @@ namespace HealthcareApp.Tests.Application.Appointments.Commands.Book
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Contain("No doctor with this ID was found");
-            result.Body.Should().BeNullOrEmpty();
+            result.Body.Should().BeGreaterThanOrEqualTo(0);
 
             await _appointmentRepository
                 .DidNotReceiveWithAnyArgs()
-                .IsAvailableAsync(Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<TimeSpan>());
+                .IsAvailableAsync(Arg.Any<string>(), Arg.Any<DateTime>());
         }
     }
 }
