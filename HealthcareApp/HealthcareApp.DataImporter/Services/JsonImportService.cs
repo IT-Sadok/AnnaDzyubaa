@@ -1,111 +1,38 @@
-﻿using HealthcareApp.Infrastructure.Persistance;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using HealthcareApp.Domain.Entities;
+using HealthcareApp.Infrastructure.Persistance;
+using HealthcareApp.Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Text.Json; 
 using System.Threading.Tasks;
-using HealthcareApp.DataImporter.DataTypes;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+using HealthcareApp.Application.Abstractions.Decorators;
+using HealthcareApp.DataImporter.Abstractions;
+using HealthcareApp.Application.Abstractions;
+using HealthcareApp.Application.DTOs.DataImporter;
 
 namespace HealthcareApp.DataImporter.Services
 {
-    public class JsonImportService
+    public class JsonImportService : BaseMigrationsService
     {
-        private readonly ApplicationDbContext _context;
-
-        public JsonImportService(ApplicationDbContext context)
+        public JsonImportService(IMigrationsRepository migrationsRepository)
+            : base (migrationsRepository)
         {
-            _context = context;
         }
 
-        public async Task ImportAsync()
+        protected override async IAsyncEnumerable<JsonUserDTO?> ReadDataStreamAsync(string path)
         {
-            Console.WriteLine("Import started ...");
+            using var fileStream = File.OpenRead(path);
 
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "data.json");
-
-            if (!File.Exists(filePath))
+            var options = new JsonSerializerOptions
             {
-                Console.WriteLine($"Error: File not found at {filePath}");
-            }
+                PropertyNameCaseInsensitive = true
+            };
 
-            Console.WriteLine("Opening file stream ...");
-
-            using (FileStream fileStream = File.OpenRead(filePath))
-            using (StreamReader streamReader = new StreamReader(fileStream))
-            using (JsonTextReader jsonReader = new JsonTextReader(streamReader))
+            await foreach (var user in JsonSerializer.DeserializeAsyncEnumerable<JsonUserDTO>(fileStream, options))
             {
-                while (jsonReader.Read())
-                {
-                    if (jsonReader.TokenType == JsonToken.PropertyName)
-                    {
-                        string propertyName = jsonReader.Value?.ToString();
-
-                        if (propertyName == "doctors")
-                        {
-                            Console.WriteLine("Found 'doctor' section. Starting import ...");
-                            await ProcessDoctors(jsonReader);
-                        }
-                        else if (propertyName == "patients")
-                        {
-                            Console.WriteLine("Found 'patients' section. Starting import...");
-                            await ProcessPatients(jsonReader);
-                        }
-
-                    }
-                }
+                yield return user;
             }
-
-            Console.WriteLine("Import completed successfully!");
-
-        }
-
-        private async Task ProcessDoctors(JsonTextReader reader)
-        {
-            Console.WriteLine("--- Starting to process Doctors in batches ---");
-            var serializer = new JsonSerializer();
-            var doctorsBatch = new List<JsonDoctor>();
-
-            int batchSize = 3;
-            int totalSaved = 0;
-
-            while (reader.Read() && reader.TokenType != JsonToken.EndArray)
-            {
-                if (reader.TokenType == JsonToken.StartObject)
-                {
-                    var doctorDto = serializer.Deserialize<JsonDoctor>(reader);
-
-                    if (doctorDto != null)
-                    {
-                        doctorsBatch.Add(doctorDto);
-                    }
-
-                    if (doctorsBatch.Count >= batchSize)
-                    {
-                        await SaveDoctorsBatchAsync(doctorsBatch);
-                        totalSaved += doctorsBatch.Count;
-                        doctorsBatch.Clear();
-                    }
-                }
-            }
-
-            Console.WriteLine($"--- Finished processing Doctors. Total scanned: {totalSaved} ---");
-        }
-
-        private async Task SaveDoctorsBatchAsync(List<JsonDoctor> batch)
-        {
-            Console.WriteLine($"[DB] Saving a batch of {batch.Count} doctors...");
-
-            await Task.Delay(50);
-        }
-
-        private async Task ProcessPatients(JsonTextReader reader)
-        {
-            Console.WriteLine("--- Processing Patients (Skipped for now) ---");
-            reader.Skip();
         }
     }
 }

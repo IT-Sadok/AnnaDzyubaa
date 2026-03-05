@@ -1,86 +1,138 @@
-{
-  "doctors": [
-    {
-      "externalId": "doc-001",
-      "fullName": "Gregory House",
-      "email": "house@princeton-plainsboro.com",
-      "appointments": [
-        {
-          "date": "2024-03-20T10:00:00",
-          "patientExternalId": "pat-001"
-        },
-        {
-          "date": "2024-03-20T11:00:00",
-          "patientExternalId": "pat-002"
-        }
-      ]
-    },
-    {
-      "externalId": "doc-002",
-      "fullName": "James Wilson",
-      "email": "wilson@princeton-plainsboro.com",
-      "appointments": []
-    },
-    {
-      "externalId": "doc-003",
-      "fullName": "Lisa Cuddy",
-      "email": "cuddy@princeton-plainsboro.com",
-      "appointments": [
-        {
-          "date": "2024-03-21T09:00:00",
-          "patientExternalId": "pat-003"
-        }
-      ]
-    },
-    {
-      "externalId": "doc-004",
-      "fullName": "Eric Foreman",
-      "email": "foreman@princeton-plainsboro.com",
-      "appointments": []
-    },
-    {
-      "externalId": "doc-005",
-      "fullName": "Allison Cameron",
-      "email": "cameron@princeton-plainsboro.com",
-      "appointments": [
-        {
-          "date": "2024-03-22T14:00:00",
-          "patientExternalId": "pat-001"
-        }
-      ]
-    },
-    {
-      "externalId": "doc-006",
-      "fullName": "Robert Chase",
-      "email": "chase@princeton-plainsboro.com",
-      "appointments": []
-    }
-  ],
-  "patients": [
-    {
-      "externalId": "pat-001",
-      "fullName": "John Doe",
-      "email": "johndoe@example.com"
-    },
-    {
-      "externalId": "pat-002",
-      "fullName": "Jane Smith",
-      "email": "janesmith@example.com"
-    },
-    {
-      "externalId": "pat-003",
-      "fullName": "Alice Johnson",
-      "email": "alicej@example.com"
-    },
-    {
-      "externalId": "pat-004",
-      "fullName": "Bob Brown",
-      "email": "bobbrown@example.com"
-    },
-    {
-      "externalId": "pat-005",
-      "fullName": "Charlie Black",
-      "email": "charlieb@example.com"
-    }
-  ]
-}
+[
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-001",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com"
+  },
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-002",
+    "firstName": "Alice",
+    "lastName": "Williams",
+    "email": "alice.w@example.com"
+  },
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-003",
+    "firstName": "Robert",
+    "lastName": "Johnson",
+    "email": "robert.j@example.com"
+  },
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-004",
+    "firstName": "Emma",
+    "lastName": "Watson",
+    "email": "emma.w@example.com"
+  },
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-005",
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.b@example.com"
+  },
+  {
+    "roles": [ "Patient" ],
+    "externalId": "pat-006",
+    "firstName": "Sarah",
+    "lastName": "Davis",
+    "email": "sarah.d@example.com"
+  },
+  {
+    "roles": [ "Doctor", "Patient" ],
+    "externalId": "doc-001",
+    "firstName": "Gregory",
+    "lastName": "House",
+    "email": "house@clinic.com",
+    "appointments": [
+      {
+        "patientExternalId": "pat-001",
+        "startTime": "2024-03-20T10:00:00Z",
+        "endTime": "2024-03-20T10:30:00Z",
+        "status": 1,
+        "durationMinutes": 30
+      },
+      {
+        "patientExternalId": "pat-002",
+        "startTime": "2024-03-20T11:00:00Z",
+        "endTime": "2024-03-20T11:45:00Z",
+        "status": 1,
+        "durationMinutes": 45
+      }
+    ]
+  },
+  {
+    "roles": [ "Doctor" ],
+    "externalId": "doc-002",
+    "firstName": "James",
+    "lastName": "Wilson",
+    "email": "wilson@clinic.com",
+    "appointments": []
+  },
+  {
+    "roles": [ "Doctor" ],
+    "externalId": "doc-003",
+    "firstName": "Lisa",
+    "lastName": "Cuddy",
+    "email": "cuddy@clinic.com",
+    "appointments": [
+      {
+        "patientExternalId": "pat-003",
+        "startTime": "2024-03-21T09:00:00Z",
+        "endTime": "2024-03-21T09:15:00Z",
+        "status": 1,
+        "durationMinutes": 15
+      }
+    ]
+  },
+  {
+    "roles": [ "Doctor" ],
+    "externalId": "doc-004",
+    "firstName": "John",
+    "lastName": "Dorian",
+    "email": "jd@sacredheart.com",
+    "appointments": [
+      {
+        "patientExternalId": "pat-004",
+        "startTime": "2024-03-22T14:00:00Z",
+        "endTime": "2024-03-22T15:00:00Z",
+        "status": 1,
+        "durationMinutes": 60
+      },
+      {
+        "patientExternalId": "pat-005",
+        "startTime": "2024-03-22T15:30:00Z",
+        "endTime": "2024-03-22T16:00:00Z",
+        "status": 1,
+        "durationMinutes": 30
+      }
+    ]
+  },
+  {
+    "roles": [ "Doctor" ],
+    "externalId": "doc-005",
+    "firstName": "Elliot",
+    "lastName": "Reid",
+    "email": "elliot@sacredheart.com",
+    "appointments": []
+  },
+  {
+    "roles": [ "Doctor" ],
+    "externalId": "doc-006",
+    "firstName": "Christopher",
+    "lastName": "Turk",
+    "email": "turk@sacredheart.com",
+    "appointments": [
+      {
+        "patientExternalId": "pat-006",
+        "startTime": "2024-03-23T10:00:00Z",
+        "endTime": "2024-03-23T12:00:00Z",
+        "status": 1,
+        "durationMinutes": 120
+      }
+    ]
+  }
+]

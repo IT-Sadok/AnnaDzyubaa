@@ -1,5 +1,4 @@
-﻿using HealthcareApp.DataImporter;
-using HealthcareApp.DataImporter.Configuration;
+﻿using HealthcareApp.DataImporter.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 var host = HostBuilderConfigurator.CreateHostBuilder(args).Build();
