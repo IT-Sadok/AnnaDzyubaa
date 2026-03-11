@@ -13,7 +13,7 @@ using HealthcareApp.Application.DTOs.DataImporter;
 
 namespace HealthcareApp.DataImporter.Services
 {
-    public class JsonImportService : BaseMigrationsService
+    public class JsonImportService : MigrationsServiceBase
     {
         public JsonImportService(IMigrationsRepository migrationsRepository)
             : base (migrationsRepository)

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace HealthcareApp.DataImporter.Abstractions
 {
-    public abstract class BaseMigrationsService
+    public abstract class MigrationsServiceBase
     {
         private readonly IMigrationsRepository _migrationsRepository;
 
-        protected BaseMigrationsService(IMigrationsRepository migrationsRepository)
+        protected MigrationsServiceBase(IMigrationsRepository migrationsRepository)
         {
             _migrationsRepository = migrationsRepository;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +49,9 @@ namespace HealthcareApp.Infrastructure.Repository
 
                         var result = await _userManagerDecorator.CreateAsync(currentUser, "ImportedUser123!");
 
-                        if (result.Succeeded && dto.Roles != null)
+                        if (result.Succeeded && dto.Roles != null && dto.Roles.Any())
                         {
-                            foreach (var role in dto.Roles)
-                            {
-                                await _userManagerDecorator.AddToRoleAsync(currentUser, role);
-                            }
+                            await _userManagerDecorator.AddToRolesAsync(currentUser, dto.Roles);
                         }
                     }
                     else
