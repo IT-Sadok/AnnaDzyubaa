@@ -16,5 +16,6 @@ namespace HealthcareApp.Domain.Entities
         [JsonIgnore]
         [XmlIgnore]
         public ICollection<Appointment>? DoctorAppointments { get; set; }
+        public string? ExternalId { get; set; }
     }
 }
